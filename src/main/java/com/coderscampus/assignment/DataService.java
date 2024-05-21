@@ -1,7 +1,7 @@
 package com.coderscampus.assignment;
 
 import java.util.LinkedHashMap;
-import java.util.concurrent.Executor;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -20,8 +20,19 @@ public class DataService {
         this.ass8 = ass8;
     }
 
-    public void analyze() {
+    public void collectData() {
+        for (int i = 0; i < 10; i++) {
+            taskDto.setInputNumbers(CompletableFuture.supplyAsync(TaskDto::new, cachedTask)
+                    .thenApply(TaskDto::getInputNumbers)
+                    .thenAccept(TaskDto::fetchInputNumbers));
+        }
+    }
 
+    private void dataCount() {
+
+    }
+
+    public void analyze() {
 
     }
 }
