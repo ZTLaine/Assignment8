@@ -21,7 +21,7 @@ public class DataService {
         List<CompletableFuture<TaskDto>> futures = new ArrayList<>();
 //        List<CompletableFuture<List<Integer>>> futures = new ArrayList<>();
         for (int i = 0; i < 150; i++) {
-            futures.add(CompletableFuture.supplyAsync(TaskDto::new, cachedTask)
+            futures.add(CompletableFuture.supplyAsync(() -> new TaskDto(ass8), cachedTask)
                     .thenApplyAsync(TaskDto::fetchInputNumbers, cachedTask));
             incrementCompletedThreads();
 //            futures.add(CompletableFuture.supplyAsync(Assignment8::new, cachedTask)
