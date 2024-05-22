@@ -7,12 +7,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class TaskDto {
     private List<Integer> inputNumbers;
     private Integer MaxNum;
-//    private AtomicInteger countedNum = new AtomicInteger(0);
     private Assignment8 ass8;
 
     public TaskDto(Assignment8 ass8) {
         this.ass8 = ass8;
-        //make sure the ass is coming from DataService and is not new
         inputNumbers = new ArrayList<Integer>();
     }
 
