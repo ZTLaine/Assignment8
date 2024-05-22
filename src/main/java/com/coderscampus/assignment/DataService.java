@@ -14,16 +14,20 @@ public class DataService {
     private AtomicInteger completedThreads = new AtomicInteger(0);
     private List<Integer> inputNumbers;
     private LinkedHashMap<Integer, Integer> numberAppearances = new LinkedHashMap<>();
+    private Assignment8 ass8 = new Assignment8();
 //    private TaskDto taskDto = new TaskDto();
 
     public void collectData() {
         List<CompletableFuture<TaskDto>> futures = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-//            taskDto.setInputNumbers();
+//        List<CompletableFuture<List<Integer>>> futures = new ArrayList<>();
+        for (int i = 0; i < 150; i++) {
             futures.add(CompletableFuture.supplyAsync(TaskDto::new, cachedTask)
-                    .thenApplyAsync(TaskDto::fetchInputNumbers));
+                    .thenApplyAsync(TaskDto::fetchInputNumbers, cachedTask));
             incrementCompletedThreads();
-            System.out.println("Completed " + completedThreads);
+//            futures.add(CompletableFuture.supplyAsync(Assignment8::new, cachedTask)
+//                    .thenApplyAsync(Assignment8::getNumbers));
+//            incrementCompletedThreads();
+            System.out.println("Completed " + completedThreads.get());
         }
     }
 
