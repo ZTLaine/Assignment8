@@ -17,9 +17,9 @@ public class TaskDto {
         return inputNumbers;
     }
 
-    public void setInputNumbers() {
-        this.inputNumbers = inputNumbers;
-    }
+//    public void setInputNumbers() {
+//        this.inputNumbers = inputNumbers;
+//    }
 
     public Integer getMaxNum() {
         return MaxNum;
@@ -29,7 +29,7 @@ public class TaskDto {
         MaxNum = maxNum;
     }
 
-    public List<Integer> fetchInputNumbers() {
+    public TaskDto fetchInputNumbers() {
         inputNumbers.addAll(ass8.getNumbers());
         return this;
     }
