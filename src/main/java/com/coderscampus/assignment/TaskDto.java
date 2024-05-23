@@ -2,11 +2,9 @@ package com.coderscampus.assignment;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class TaskDto {
     private List<Integer> inputNumbers;
-    private Integer MaxNum;
     private Assignment8 ass8;
 
     public TaskDto(Assignment8 ass8) {
@@ -16,18 +14,6 @@ public class TaskDto {
 
     public List<Integer> getInputNumbers() {
         return inputNumbers;
-    }
-
-//    public void setInputNumbers() {
-//        this.inputNumbers = inputNumbers;
-//    }
-
-    public Integer getMaxNum() {
-        return MaxNum;
-    }
-
-    public void setMaxNum(Integer maxNum) {
-        MaxNum = maxNum;
     }
 
     public TaskDto fetchInputNumbers() {

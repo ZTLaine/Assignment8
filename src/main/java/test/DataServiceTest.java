@@ -20,6 +20,11 @@ public class DataServiceTest {
         }
     }
 
+    @Test
+    public void testReadAllData(){
+
+    }
+
 //    @Test
 //    public void readBlockFromList() {
 //        DataService dataService = new DataService();
