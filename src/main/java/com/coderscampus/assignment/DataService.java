@@ -18,7 +18,7 @@ public class DataService {
     private List<CompletableFuture<TaskDto>> futures = new ArrayList<>();
     private Map<Object, Long> numberAppearances = new HashMap<>();
     private Assignment8 ass8 = new Assignment8();
-    private final Integer ITERATIONS = 50;
+    private final Integer ITERATIONS = 1000;
 
     public void collectData() {
         for (int i = 0; i < ITERATIONS; i++) {
@@ -30,7 +30,6 @@ public class DataService {
         while (futures.stream().filter(CompletableFuture::isDone).count() < ITERATIONS) {
             System.out.println("Completed collection threads: " + futures.stream().filter(CompletableFuture::isDone).count());
         }
-
         System.out.println("Completed collection threads: " + futures.stream().filter(CompletableFuture::isDone).count());
     }
 
@@ -45,8 +44,8 @@ public class DataService {
         for (CompletableFuture<TaskDto> future : futures) {
             future.thenAccept(taskDto -> {
                 List<Integer> inputNumbers = taskDto.getInputNumbers();
-                numberAppearances = inputNumbers.stream()
-                        .collect(Collectors.groupingBy(e -> e, Collectors.counting()));
+                numberAppearances.putAll(inputNumbers.stream()
+                        .collect(Collectors.groupingBy(e -> e, Collectors.counting())));
             });
 //            TaskDto taskDto = future.join();
 //            numberAppearances = taskDto.getInputNumbers()
@@ -56,24 +55,22 @@ public class DataService {
 
     public void analyze() {
         collectData();
-//        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
         dataCount();
-//        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
         System.out.println(numberAppearances);
 
         cachedTask.shutdown();
         fixedTask.shutdown();
 
-        Map<Thread, StackTraceElement[]> stackTraces = Thread.getAllStackTraces();
-        for (Map.Entry<Thread, StackTraceElement[]> entry : stackTraces.entrySet()) {
-            Thread thread = entry.getKey();
-            if (!thread.isDaemon()) {
-                System.out.println("Non-daemon thread: " + thread.getName());
-                for (StackTraceElement stackTraceElement : entry.getValue()) {
-                    System.out.println("\t" + stackTraceElement);
-                }
-            }
-        }
+//        Map<Thread, StackTraceElement[]> stackTraces = Thread.getAllStackTraces();
+//        for (Map.Entry<Thread, StackTraceElement[]> entry : stackTraces.entrySet()) {
+//            Thread thread = entry.getKey();
+//            if (!thread.isDaemon()) {
+//                System.out.println("Non-daemon thread: " + thread.getName());
+//                for (StackTraceElement stackTraceElement : entry.getValue()) {
+//                    System.out.println("\t" + stackTraceElement);
+//                }
+//            }
+//        }
 
     }
 }

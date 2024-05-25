@@ -5,5 +5,4 @@ public class MultiThreadingApp {
         DataService dataService = new DataService();
         dataService.analyze();
     }
-
 }
