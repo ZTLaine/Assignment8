@@ -22,8 +22,8 @@ public class DataService {
 
     public void collectData() {
         for (int i = 0; i < ITERATIONS; i++) {
-            futures.add(CompletableFuture.supplyAsync(() -> new TaskDto(ass8), fixedTask)
-                    .thenApplyAsync(TaskDto::fetchInputNumbers, fixedTask));
+            futures.add(CompletableFuture.supplyAsync(() -> new TaskDto(ass8), cachedTask)
+                    .thenApplyAsync(TaskDto::fetchInputNumbers, cachedTask));
             incrementCompletedThreads();
             System.out.println("Started " + completedThreads.get());
         }
@@ -43,14 +43,14 @@ public class DataService {
 
     private void dataCount(){
         for (CompletableFuture<TaskDto> future : futures) {
-//            future.thenAccept(taskDto -> {
-//                List<Integer> inputNumbers = taskDto.getInputNumbers();
-//                numberAppearances = inputNumbers.stream()
-//                        .collect(Collectors.groupingBy(e -> e, Collectors.counting()));
-//            });
-            TaskDto taskDto = future.get();
-            numberAppearances = taskDto.getInputNumbers()
-                    .stream().collect(Collectors.groupingBy(e -> e, Collectors.counting()));
+            future.thenAccept(taskDto -> {
+                List<Integer> inputNumbers = taskDto.getInputNumbers();
+                numberAppearances = inputNumbers.stream()
+                        .collect(Collectors.groupingBy(e -> e, Collectors.counting()));
+            });
+//            TaskDto taskDto = future.join();
+//            numberAppearances = taskDto.getInputNumbers()
+//                    .stream().collect(Collectors.groupingBy(e -> e, Collectors.counting()));
         }
     }
 
@@ -59,6 +59,10 @@ public class DataService {
 //        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
         dataCount();
 //        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+        System.out.println(numberAppearances);
+
+        cachedTask.shutdown();
+        fixedTask.shutdown();
 
         Map<Thread, StackTraceElement[]> stackTraces = Thread.getAllStackTraces();
         for (Map.Entry<Thread, StackTraceElement[]> entry : stackTraces.entrySet()) {
