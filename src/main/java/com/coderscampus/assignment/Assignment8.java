@@ -58,4 +58,18 @@ public class Assignment8 {
         return newList;
     }
 
+    public List<Integer> getNumbersTest() {
+        int start, end;
+        start = 0;
+        end = 1000000;
+
+        List<Integer> newList = new ArrayList<>();
+        IntStream.range(start, end)
+                .forEach(n -> {
+                    newList.add(numbers.get(n));
+                });
+        System.out.println("Done Fetching records " + start + " to " + (end));
+        return newList;
+    }
+
 }

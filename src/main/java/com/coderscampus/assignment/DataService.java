@@ -15,21 +15,93 @@ public class DataService {
     private ExecutorService fixedTask = Executors.newFixedThreadPool(6);
     private AtomicInteger completedThreads = new AtomicInteger(0);
     private List<CompletableFuture<TaskDto>> futures = new ArrayList<>();
+    private List<Integer> allInputs = new ArrayList<>();
     private Map<Object, Long> numberAppearances = new HashMap<>();
     private Assignment8 ass8 = new Assignment8();
-    private final Integer ITERATIONS = 1000;
+    private Integer iterations = 1000;
 
-    public void collectData() {
-        for (int i = 0; i < ITERATIONS; i++) {
+    public DataService() {
+    }
+
+    public DataService(Integer iterations) {
+        this.iterations = iterations;
+    }
+
+    public ExecutorService getCachedTask() {
+        return cachedTask;
+    }
+
+    public void setCachedTask(ExecutorService cachedTask) {
+        this.cachedTask = cachedTask;
+    }
+
+    public ExecutorService getFixedTask() {
+        return fixedTask;
+    }
+
+    public void setFixedTask(ExecutorService fixedTask) {
+        this.fixedTask = fixedTask;
+    }
+
+    public AtomicInteger getCompletedThreads() {
+        return completedThreads;
+    }
+
+    public void setCompletedThreads(AtomicInteger completedThreads) {
+        this.completedThreads = completedThreads;
+    }
+
+    public List<CompletableFuture<TaskDto>> getFutures() {
+        return futures;
+    }
+
+    public void setFutures(List<CompletableFuture<TaskDto>> futures) {
+        this.futures = futures;
+    }
+
+    public Map<Object, Long> getNumberAppearances() {
+        return numberAppearances;
+    }
+
+    public void setNumberAppearances(Map<Object, Long> numberAppearances) {
+        this.numberAppearances = numberAppearances;
+    }
+
+    public Assignment8 getAss8() {
+        return ass8;
+    }
+
+    public void setAss8(Assignment8 ass8) {
+        this.ass8 = ass8;
+    }
+
+    public Integer getIterations() {
+        return iterations;
+    }
+
+    public void setIterations(Integer iterations) {
+        this.iterations = iterations;
+    }
+
+    public List<Integer> getAllInputs() {
+        return allInputs;
+    }
+
+    public void setAllInputs(List<Integer> allInputs) {
+        this.allInputs = allInputs;
+    }
+
+    private void collectData() {
+        for (int i = 0; i < iterations; i++) {
             futures.add(CompletableFuture.supplyAsync(() -> new TaskDto(ass8), cachedTask)
                     .thenApplyAsync(TaskDto::fetchInputNumbers, cachedTask));
             incrementCompletedThreads();
-            System.out.println("Started " + completedThreads.get());
+//            System.out.println("Started " + completedThreads.get());
         }
-        while (futures.stream().filter(CompletableFuture::isDone).count() < ITERATIONS) {
-            System.out.println("Completed collection threads: " + futures.stream().filter(CompletableFuture::isDone).count());
+        while (futures.stream().filter(CompletableFuture::isDone).count() < iterations) {
+//            System.out.println("Completed collection threads: " + futures.stream().filter(CompletableFuture::isDone).count());
         }
-        System.out.println("Completed collection threads: " + futures.stream().filter(CompletableFuture::isDone).count());
+//        System.out.println("Completed collection threads: " + futures.stream().filter(CompletableFuture::isDone).count());
     }
 
 
@@ -52,6 +124,8 @@ public class DataService {
                             .stream()
                             .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue() + numberAppearances.get(entry.getKey())));
                 }
+                //allInputs is just to make testing less annoying
+                allInputs.addAll(inputNumbers);
             });
 //            TaskDto taskDto = future.join();
 //            numberAppearances = taskDto.getInputNumbers()
