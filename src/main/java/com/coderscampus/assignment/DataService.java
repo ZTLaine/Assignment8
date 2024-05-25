@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -40,12 +39,19 @@ public class DataService {
         }
     }
 
-    private void dataCount(){
+    private void dataCount() {
         for (CompletableFuture<TaskDto> future : futures) {
             future.thenAccept(taskDto -> {
                 List<Integer> inputNumbers = taskDto.getInputNumbers();
-                numberAppearances.putAll(inputNumbers.stream()
-                        .collect(Collectors.groupingBy(e -> e, Collectors.counting())));
+                Map<Object, Long> instanceNumAppearances = inputNumbers.stream()
+                        .collect(Collectors.groupingBy(e -> e, Collectors.counting()));
+                if (numberAppearances.entrySet().isEmpty()) {
+                    numberAppearances = instanceNumAppearances;
+                } else {
+                    numberAppearances = instanceNumAppearances.entrySet()
+                            .stream()
+                            .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue() + numberAppearances.get(entry.getKey())));
+                }
             });
 //            TaskDto taskDto = future.join();
 //            numberAppearances = taskDto.getInputNumbers()
