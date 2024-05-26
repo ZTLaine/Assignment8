@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 public class DataServiceTest {
 
     @Test
-    public void testReadAllData(){
+    public void read_all_data(){
         DataService dataService = new DataService();
         Assignment8 assignment8 = new Assignment8();
 
@@ -26,7 +26,7 @@ public class DataServiceTest {
     }
 
     @Test
-    public void testCountData(){
+    public void count_data(){
         DataService dataService = new DataService();
         Assignment8 assignment8 = new Assignment8();
         Map<Object, Long> testNumAppearances;
@@ -45,7 +45,7 @@ public class DataServiceTest {
     }
 
     @Test
-    public void testHangingThreads() throws InterruptedException {
+    public void avoid_hanging_threads() throws InterruptedException {
         DataService dataService = new DataService();
         Boolean hanging = false;
 
