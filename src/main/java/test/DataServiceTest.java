@@ -4,10 +4,7 @@ import com.coderscampus.assignment.Assignment8;
 import com.coderscampus.assignment.DataService;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
@@ -44,17 +41,25 @@ public class DataServiceTest {
     }
 
     @Test
-    public void testHangingThreads(){
-        DataService dataService = new DataService(1000);
+    public void testHangingThreads() throws InterruptedException {
+        DataService dataService = new DataService();
+        Boolean hanging = false;
+
+        dataService.analyze();
+        Thread.sleep(1000);
+
         Map<Thread, StackTraceElement[]> stackTraces = Thread.getAllStackTraces();
         for (Map.Entry<Thread, StackTraceElement[]> entry : stackTraces.entrySet()) {
             Thread thread = entry.getKey();
-            if (!thread.isDaemon()) {
+            if (!thread.isDaemon() && !Objects.equals(thread.getName(), "main")) {
                 System.out.println("Non-daemon thread: " + thread.getName());
-                for (StackTraceElement stackTraceElement : entry.getValue()) {
-                    System.out.println("\t" + stackTraceElement);
-                }
+                hanging = true;
+//                for (StackTraceElement stackTraceElement : entry.getValue()) {
+//                    System.out.println("\t" + stackTraceElement);
+//                }
             }
         }
+
+        assertEquals(hanging,false);
     }
 }
