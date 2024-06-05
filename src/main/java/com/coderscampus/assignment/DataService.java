@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 
 public class DataService {
     private ExecutorService cachedTask = Executors.newCachedThreadPool();
-    private ExecutorService fixedTask = Executors.newFixedThreadPool(6);
     private List<CompletableFuture<TaskDto>> futures = new ArrayList<>();
     private List<Integer> allInputs = new ArrayList<>();
     private Map<Object, Long> numberAppearances = new HashMap<>();
@@ -70,6 +69,5 @@ public class DataService {
         System.out.println(numberAppearances);
 
         cachedTask.shutdown();
-        fixedTask.shutdown();
     }
 }
